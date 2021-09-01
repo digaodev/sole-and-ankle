@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 
 import { COLORS, WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
@@ -35,35 +35,74 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
+          {variant === 'on-sale' && (
+            <OnSaleRibbon>
+              Sale
+            </OnSaleRibbon>
+          )}
+          {variant === 'new-release' && (
+            <JustReleasedRibbon>
+              Just Released!
+            </JustReleasedRibbon>
+          )}
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          <Price variant={variant}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {variant === 'on-sale' && (<SalePrice>{formatPrice(salePrice)}</SalePrice>)}
         </Row>
       </Wrapper>
     </Link>
   );
 };
 
+const BaseRibbon = styled.span`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: ${WEIGHTS.medium};
+  padding: 12px;
+`
+
+const JustReleasedRibbon = styled(BaseRibbon)`
+  background-color: ${COLORS.secondary};
+  color: ${COLORS.white};
+`
+
+const OnSaleRibbon = styled(BaseRibbon)`
+  background-color: ${COLORS.primary};
+  color: ${COLORS.white};
+`
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
 
 const Row = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 1rem;
 `;
 
@@ -72,7 +111,13 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  ${({ variant }) => css`
+    color: ${variant === 'on-sale' ? COLORS.gray[700] : COLORS.gray[900]};
+    text-decoration: ${variant === 'on-sale' && 'line-through'};
+  `
+  }
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};

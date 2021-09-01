@@ -27,18 +27,26 @@ const Header = () => {
 };
 
 const MainHeader = styled.div`
-  padding: 0 32px;
+  display: flex;
+  align-items: baseline;
+
   border-bottom: 1px solid ${COLORS.gray[300]};
+  padding: 24px 32px;
 `;
 
-const Nav = styled.nav``;
+const Nav = styled.nav`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+`;
 
 const NavLink = styled.a`
+  color: ${COLORS.gray[900]};
   font-size: 1.125rem;
+  font-weight: ${WEIGHTS.medium};
   text-transform: uppercase;
   text-decoration: none;
-  color: ${COLORS.gray[900]};
-  font-weight: ${WEIGHTS.medium};
+  margin-left: 48px;
 
   &:first-of-type {
     color: ${COLORS.secondary};
